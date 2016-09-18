@@ -21,7 +21,7 @@ def new_discount():
                                              ,request.form['storename'])
 
 
-                args =  sdc.parse_discount_args(request.form)=
+                args =  sdc.parse_discount_args(request.form)
                 discount_name = sdc.new_discount(**args)
                 return "Created new discount code: " + discount_name
         except Exception as e:
