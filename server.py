@@ -4,15 +4,14 @@ from discount_creator import ShopifyDiscountCreator
 import sys
 import traceback
 
-#sdc = ShopifyDiscountCreator("wmarshall484@gmail.com", "randompass1", "marshall-emporium")
-#sdc.new_discount(value="11", name="asdfasdf")
-
 app = Flask("MyAPI")
 
+# Main landing page serves form
 @app.route('/')
 def hello_world():
         return send_from_directory("./", "form.html")
 
+# This API only has one POST endpoint for creating a discount code.
 @app.route('/new_discount', methods=['POST'])
 def new_discount():
         try:

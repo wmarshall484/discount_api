@@ -15,6 +15,8 @@ class ShopifyDiscountCreator:
     }
     
     def __init__(self, email, password, storename):
+
+        # Required params
         self.email = email
         self.password = password
         self.storename = storename
@@ -29,11 +31,13 @@ class ShopifyDiscountCreator:
                      usage_limit_type = "no_limit", usage_limit="", applies_once_per_customer="0",
                      starts_at=str(datetime.today().year)+ '-' + str(datetime.today().month) + '-' + str(datetime.today().day),
                      discount_never_expires = ""):
+        # If no name is given, for now it's just a random hex string.
         if name is None:
             hex_chars = list("0123456789ABCDEF")
             name = ''.join(random.choice(hex_chars) for i in range(10))
 
         try:
+            # make sure that the value is numeric
             value = str(float(value))
         except:
             raise ValueError("Must provide a discount amount and a numeric type")
@@ -44,13 +48,8 @@ class ShopifyDiscountCreator:
         headers = [(x, y) for x, y in ShopifyDiscountCreator.post_headers.iteritems()]
         opener.addheaders = headers
         
-        # done adding headers to our opener (which means it will be used every time from now on)
-        
-        # set up our post
-        
         form_data = {
             'utf8':"",
-            #authenticity_token=VeJ1b0aYxO2tlrcQnZB2aHwtRXULm/L9F/mYnRDBFoGTOypiL6DPpHu7DwQtTtoI0nQC9SlXUeseUf97 x/64A==
             'authenticity_token':authentication_token,
             'discount[code]':name,
             'discount[discount_type]':discount_type,
@@ -65,6 +64,7 @@ class ShopifyDiscountCreator:
         
         
         encoded_post_data = urllib.urlencode( form_data )
+        # create discount
         _file = opener.open( self.discounts_url, encoded_post_data)
         response = _file.read()
         _file.close()
