@@ -30,7 +30,7 @@ class ShopifyDiscountCreator:
     def new_discount(self, value=None, name=None, discount_type = "fixed_amount", applies_to_resource="",
                      usage_limit_type = "no_limit", usage_limit="", applies_once_per_customer="0",
                      starts_at=str(datetime.today().year)+ '-' + str(datetime.today().month) + '-' + str(datetime.today().day),
-                     discount_never_expires = ""):
+                     discount_never_expires = "", minimum_order_amount="0"):
         # If no name is given, for now it's just a random hex string.
         if name is None:
             hex_chars = list("0123456789ABCDEF")
@@ -55,6 +55,7 @@ class ShopifyDiscountCreator:
             'discount[discount_type]':discount_type,
             'discount[value]':value,
             'discount[applies_to_resource]':applies_to_resource,
+            'discount[minimum_order_amount]':minimum_order_amount,
             'usage_limit_type':usage_limit_type,
             'discount[usage_limit]':usage_limit,
             'discount[applies_once_per_customer]':applies_once_per_customer,
@@ -106,6 +107,7 @@ class ShopifyDiscountCreator:
         self.copy_val_if_exists(mdict, args, "name")
         self.copy_val_if_exists(mdict, args, "discount_type")
         self.copy_val_if_exists(mdict, args, "applies_to_resource")
+        self.copy_val_if_exists(mdict, args, "minimum_order_amount")
         self.copy_val_if_exists(mdict, args, "usage_limit_type")
         self.copy_val_if_exists(mdict, args, "usage_limit")
         self.copy_val_if_exists(mdict, args, "applies_once_per_customer")
