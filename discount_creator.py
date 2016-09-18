@@ -40,7 +40,7 @@ class ShopifyDiscountCreator:
 
         opener = self.__log_in()
         authentication_token = self.__get_auth_token(opener)
-
+        
         headers = [(x, y) for x, y in ShopifyDiscountCreator.post_headers.iteritems()]
         opener.addheaders = headers
         
@@ -70,7 +70,7 @@ class ShopifyDiscountCreator:
         _file.close()
         
         # discount code created!
-        
+        return name
 
     def __log_in(self):
         opener = urllib2.build_opener( urllib2.HTTPCookieProcessor() )
@@ -84,6 +84,7 @@ class ShopifyDiscountCreator:
         
         _file = opener.open( self.login_url, encoded_params )
         response = _file.read()
+        #print response
         _file.close()
         return opener
 
@@ -99,5 +100,19 @@ class ShopifyDiscountCreator:
         return authentication_token
 
 
-sdc = ShopifyDiscountCreator("wmarshall484@gmail.com", "randompass1", "marshall-emporium")
-sdc.new_discount(value="11", name="asdfasdf")
+    def parse_discount_args(self, mdict):
+        args = {}        
+        self.copy_val_if_exists(mdict, args, "value")
+        self.copy_val_if_exists(mdict, args, "name")
+        self.copy_val_if_exists(mdict, args, "discount_type")
+        self.copy_val_if_exists(mdict, args, "applies_to_resource")
+        self.copy_val_if_exists(mdict, args, "usage_limit_type")
+        self.copy_val_if_exists(mdict, args, "usage_limit")
+        self.copy_val_if_exists(mdict, args, "applies_once_per_customer")
+        self.copy_val_if_exists(mdict, args, "starts_at")
+        self.copy_val_if_exists(mdict, args, "discount_never_expires")
+        return args
+        
+    def copy_val_if_exists(self, mdict, args, key):
+        if key in mdict:
+            args[key] = mdict[key]
